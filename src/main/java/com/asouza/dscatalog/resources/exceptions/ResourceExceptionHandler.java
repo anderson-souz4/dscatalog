@@ -1,6 +1,7 @@
 package com.asouza.dscatalog.resources.exceptions;
 
-import com.asouza.dscatalog.services.exceptions.EntityNotFoundException;
+import com.asouza.dscatalog.services.exceptions.DataBaseException;
+import com.asouza.dscatalog.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +19,8 @@ public class ResourceExceptionHandler {
      * @param request
      * @return StandardError
      */
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<StandardError> entityNotFound(EntityNotFoundException e, HttpServletRequest request){
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<StandardError> entityNotFound(ResourceNotFoundException e, HttpServletRequest request){
         StandardError err = new StandardError();
         err.setTimestamp(Instant.now());
         err.setStatus(HttpStatus.NOT_FOUND.value());
@@ -27,6 +28,21 @@ public class ResourceExceptionHandler {
         err.setMessage(e.getMessage());
         err.setPath(request.getRequestURI());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
-
     }
+
+    @ExceptionHandler(DataBaseException.class)
+    public ResponseEntity<StandardError> database(DataBaseException e, HttpServletRequest request){
+        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        StandardError err = new StandardError();
+        err.setTimestamp(Instant.now());
+        err.setStatus(badRequest.value());
+        err.setError("Database exception");
+        err.setMessage(e.getMessage());
+        err.setPath(request.getRequestURI());
+        return ResponseEntity.status(badRequest).body(err);
+    }
+
+
+
+
 }
