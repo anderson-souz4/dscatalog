@@ -1,7 +1,6 @@
 # **CRUD** de **produtos** e **categoria**.
 
 ```
-{
-  "name":"Anderson"
-}
+Java
+Springboot
 ```
