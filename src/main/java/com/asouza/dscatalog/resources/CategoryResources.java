@@ -16,6 +16,7 @@ import java.net.URI;
 @RestController
 @RequestMapping("/categories")
 public class CategoryResources {
+
     @Autowired
     CategoryService categoryService;
 
