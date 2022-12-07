@@ -18,7 +18,6 @@ public class User {
     @Column(unique = true)
     private String email;
     private String password;
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "tb_user_role",
