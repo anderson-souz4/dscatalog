@@ -1,9 +1,6 @@
 package com.asouza.dscatalog.services;
 
-import com.asouza.dscatalog.dto.CategoryDTO;
-import com.asouza.dscatalog.dto.ProductDTO;
-import com.asouza.dscatalog.dto.RoleDTO;
-import com.asouza.dscatalog.dto.UserDTO;
+import com.asouza.dscatalog.dto.*;
 import com.asouza.dscatalog.entities.Category;
 import com.asouza.dscatalog.entities.Product;
 import com.asouza.dscatalog.entities.Role;
@@ -20,6 +17,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,10 +26,13 @@ import java.util.Optional;
 @Service
 public class UserService {
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    RoleRepository roleRepository;
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
     public Page<UserDTO> findAllPaged(Pageable pageable) {
@@ -47,9 +48,10 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO insert(UserDTO dto) {
+    public UserDTO insert(UserInsertDTO dto) {
         User entity = new User();
         copyDtoToEntity(dto, entity);
+        entity.setPassword(passwordEncoder.encode(dto.getPassword()));
         entity = userRepository.save(entity);
         return new UserDTO(entity);
     }
