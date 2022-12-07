@@ -16,11 +16,12 @@ public class User {
     private String lastName;
     private String email;
     private String password;
-    @ManyToMany
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "tb_user_role",
-            joinColumns = @JoinColumn(name = "user_id"), // referencia a chave estrangeira da classe que estou
-            inverseJoinColumns = @JoinColumn(name = "role_id") // quem é a chave estrangera que faz a associação do outro lado
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles;
 
