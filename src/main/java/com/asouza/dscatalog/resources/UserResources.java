@@ -3,6 +3,7 @@ package com.asouza.dscatalog.resources;
 import com.asouza.dscatalog.dto.CategoryDTO;
 import com.asouza.dscatalog.dto.UserDTO;
 import com.asouza.dscatalog.dto.UserInsertDTO;
+import com.asouza.dscatalog.dto.UserUpdateDTO;
 import com.asouza.dscatalog.entities.User;
 import com.asouza.dscatalog.services.CategoryService;
 import com.asouza.dscatalog.services.UserService;
@@ -45,9 +46,9 @@ public class UserResources {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody UserDTO dto) {
-        dto = userService.update(id, dto);
-        return ResponseEntity.ok(dto);
+    public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody UserUpdateDTO dto) {
+        UserDTO newDto = userService.update(id, dto);
+        return ResponseEntity.ok(newDto);
     }
 
     @DeleteMapping("/{id}")
